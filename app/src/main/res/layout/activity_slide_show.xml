@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff555555"
-    tools:context=".MainActivity">
+    android:background="#ff000000"
+    tools:context="show.server.mcv.com.SlideShowActivity">
 
-    <ListView
-        android:id="@+id/listView"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ff333333"/>
+        android:adjustViewBounds="true"/>
 </RelativeLayout>

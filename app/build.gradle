@@ -17,6 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        demo {
+            applicationIdSuffix ".demo"
+            versionNameSuffix "-demo"
+        }
+        full {
+            applicationIdSuffix ".full"
+            versionNameSuffix "-full"
+        }
+    }
 }
 
 dependencies {
@@ -26,6 +36,6 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
     compile 'net.gotev:uploadservice:3.1'
+    testCompile 'junit:junit:4.12'
 }

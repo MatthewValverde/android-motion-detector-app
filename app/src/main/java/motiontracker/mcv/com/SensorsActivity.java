@@ -1,11 +1,11 @@
 package motiontracker.mcv.com;
 
-import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import motiontracker.mcv.com.data.GlobalData;
  * 
  * @author Justin Wetherell <phishman3579@gmail.com>
  */
-public class SensorsActivity extends Activity implements SensorEventListener {
+public class SensorsActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "SensorsActivity";
     private static final AtomicBoolean computing = new AtomicBoolean(false);
