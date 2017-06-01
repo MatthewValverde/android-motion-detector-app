@@ -102,7 +102,11 @@ public class MotionDetectionActivity extends SensorsActivity {
     private boolean mRunning = false;
     private boolean mTakingRemoteImg = false;
     private boolean mSendEmail = false;
+    private Handler mStartHandler = new Handler();
     private Handler mHandler = new Handler();
+    private Handler mEmailResetHandler = new Handler();
+
+    private boolean mRunningTracker = false;
 
     /**
      * {@inheritDoc}
@@ -147,8 +151,19 @@ public class MotionDetectionActivity extends SensorsActivity {
         mDirectoryUrl = mServerUrl + "images/" + mDeviceName + "/";
         new updateData().execute(link);
 
-        mHandler.postDelayed(runnable, 6000);
+        mStartHandler.postDelayed(startRunnable, 1000 * 10);
     }
+
+    private Runnable startRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mStartHandler.removeCallbacks(this);
+            mRunningTracker = true;
+            mHandler.postDelayed(runnable, 6000);
+            mEmailResetHandler.postDelayed(emailResetRunnable, 1000 * 600);
+            Log.d(TAG, "BEGIN PROCESSING...");
+        }
+    };
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -160,6 +175,14 @@ public class MotionDetectionActivity extends SensorsActivity {
             } else {
                 mHandler.postDelayed(this, 6000);
             }
+        }
+    };
+
+    private Runnable emailResetRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mSendEmail = true;
+            mEmailResetHandler.postDelayed(this, 1000 * 600);
         }
     };
 
@@ -217,7 +240,7 @@ public class MotionDetectionActivity extends SensorsActivity {
             Camera.Size size = cam.getParameters().getPreviewSize();
             if (size == null) return;
 
-            if (!GlobalData.isPhoneInMotion()) {
+            if (!GlobalData.isPhoneInMotion() && mRunningTracker) {
                 DetectionThread thread = new DetectionThread(data, size.width, size.height);
                 thread.start();
             }
@@ -468,6 +491,8 @@ public class MotionDetectionActivity extends SensorsActivity {
 
                             if (mSendEmail) {
                                 mSendEmail = false;
+                                mEmailResetHandler.removeCallbacks(emailResetRunnable);
+                                mEmailResetHandler.postDelayed(emailResetRunnable, 1000 * 600);
                                 String link = mServerUrl + "sendEmail.php?device=" + mDeviceName +
                                         "&name=" + name + "&title=" +
                                         currentCaptureDirectory.getName();
