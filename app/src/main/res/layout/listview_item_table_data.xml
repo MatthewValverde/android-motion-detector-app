@@ -14,7 +14,7 @@
         android:tag="label"
         android:text="label"
         android:textColor="#ffffff"
-        android:textSize="15sp">
+        android:textSize="18sp">
     </TextView>
 
 </RelativeLayout>

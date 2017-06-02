@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import motiontracker.mcv.com.R;
 import show.server.mcv.com.adapter.ListAdapter;
@@ -40,7 +42,7 @@ public class MainShowActivity extends AppCompatActivity implements LoaderCallbac
         if (mDirectoryName == null) {
             mDirectoryName = "";
         } else {
-            getSupportActionBar().setTitle("Detection Sessions");
+            getSupportActionBar().setTitle("Sessions");
         }
 
         // Start loader dedicated to the Distance Matrix API
@@ -80,6 +82,8 @@ public class MainShowActivity extends AppCompatActivity implements LoaderCallbac
     @Override
     public void onLoadFinished(Loader<String[]> loader, final String[] data) {
         mDevicesList = data;
+
+        Arrays.sort(data);
 
         ListAdapter adapter = new ListAdapter(this, data);
         ListView lv = (ListView) findViewById(R.id.listView);
@@ -134,5 +138,12 @@ public class MainShowActivity extends AppCompatActivity implements LoaderCallbac
         }
     }
 
+    Comparator<Integer> comparator = new Comparator<Integer>() {
+
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2.compareTo(o1);
+        }
+    };
 
 }

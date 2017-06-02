@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 import motiontracker.mcv.com.R;
 import show.server.mcv.com.adapter.PhotoAdapter;
 import show.server.mcv.com.loaders.ListLoader;
@@ -42,12 +45,14 @@ public class SlideShowActivity extends AppCompatActivity implements LoaderCallba
 
     @Override
     public void onLoadFinished(Loader<String[]> loader, final String[] data) {
+        Arrays.sort(data, Collections.<String>reverseOrder());
+
         for (int i = 0; i < data.length; i++) {
             data[i] = mUrl + "/" + data[i];
             //   Log.d(TAG, data[i]);
         }
 
-        getSupportActionBar().setTitle(String.valueOf(data.length) + " Photos Detected");
+        getSupportActionBar().setTitle(String.valueOf(data.length) + " Photos");
 
         PhotoAdapter adapter = new PhotoAdapter(this, data);
 
@@ -77,4 +82,5 @@ public class SlideShowActivity extends AppCompatActivity implements LoaderCallba
     public void onLoaderReset(Loader<String[]> loader) {
 
     }
+
 }
